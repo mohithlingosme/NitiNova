@@ -6,7 +6,7 @@ from starlette.responses import JSONResponse
 import time
 
 from backend.core.config import get_settings
-from backend.api import health, query, results, verify, auth, deps, admin
+from backend.api import health, query, results, verify, auth, deps, admin, product
 
 settings = get_settings()
 
@@ -46,6 +46,7 @@ app.include_router(query.router, prefix=settings.api_prefix, tags=["Query"])
 app.include_router(results.router, prefix=settings.api_prefix, tags=["Results"])
 app.include_router(verify.router, prefix=settings.api_prefix, tags=["Verify"])
 app.include_router(admin.router, prefix=f"{settings.api_prefix}/admin", tags=["Admin"])
+app.include_router(product.router, prefix=settings.api_prefix, tags=["Product"])
 
 @app.get("/")
 def read_root():
