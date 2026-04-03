@@ -25,7 +25,7 @@ const steps = [
 const HowItWorks: React.FC = () => {
   return (
     <section className="py-16 space-y-8 px-4 sm:px-6">
-      <h2 className="text-center text-slate-900 text-3xl font-serif font-bold">
+      <h2 className="text-center text-slate-900 text-3xl font-bold">
         Court-Ready Verification Flow
       </h2>
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 md:gap-6">

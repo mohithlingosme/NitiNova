@@ -21,12 +21,12 @@ const testimonials = [
 
 const TrustSection: React.FC = () => {
   return (
-    <section className="py-16 space-y-12">
+    <section className="py-14 space-y-12">
       <div className="text-center space-y-3">
         <p className="text-sm font-semibold text-gray-500 uppercase tracking-wide">
           Trusted by 500+ advocates
         </p>
-        <h2 className="text-3xl font-serif font-bold text-slate-900">Authority & Trust</h2>
+        <h2 className="text-3xl font-bold text-slate-900">Authority & Trust</h2>
         <p className="text-slate-700">
           Used in High Court & Supreme Court matters. Data encrypted and confidential.
         </p>
@@ -49,7 +49,7 @@ const TrustSection: React.FC = () => {
           .map((card) => (
             <div
               key={card.author}
-              className="rounded-xl border border-gray-200 bg-white p-6 h-full space-y-3"
+              className="rounded-lg border border-gray-200 bg-white p-5 h-full space-y-3 shadow-sm"
             >
               <p className="text-sm text-slate-700">"{card.quote}"</p>
               <p className="mt-3 text-xs font-semibold text-slate-800">{card.author}</p>

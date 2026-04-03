@@ -31,17 +31,17 @@ const SearchBar: React.FC<SearchBarProps> = ({
           Paste your legal argument or citations
         </label>
         <textarea
-          rows={5}
+          rows={4}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder ?? "Enter argument, issue, or citation list..."}
-          className="w-full min-h-[120px] bg-white border border-gray-300 rounded-md px-3 py-3 text-base text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]"
+          className="w-full min-h-[96px] bg-white border border-gray-300 rounded-md px-3 py-3 text-base text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0B1F3A]"
         />
         <div className="space-y-3">
           <button
             type="submit"
             disabled={!value.trim() || isLoading}
-            className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-[#0B1F3A] text-white font-semibold px-5 py-3 rounded-md border border-[#0B1F3A] hover:bg-[#091931] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
+            className="w-full md:w-auto inline-flex items-center justify-center gap-2 bg-[#0B1F3A] text-white font-semibold px-5 py-3 rounded-lg border border-[#0B1F3A] shadow-md hover:bg-[#091931] active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed transition-all duration-200"
           >
             {isLoading ? (
               <>

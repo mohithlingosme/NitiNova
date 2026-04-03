@@ -115,8 +115,8 @@ function App() {
       />
 
       <main className="flex-1 w-full">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8 py-16 space-y-16">
-          <section className="grid lg:grid-cols-[1fr_1fr] gap-12 items-center mt-20">
+        <div className="max-w-6xl mx-auto px-6 lg:px-8 py-16 space-y-12">
+          <section className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center mt-16">
             <div className="space-y-8 max-w-xl">
               <Hero />
 
@@ -133,7 +133,7 @@ function App() {
               {/* Single CTA in SearchBar only - no extras */}
             </div>
 
-            <div className="lg:mt-8">
+            <div className="self-center w-full">
               <MockupCard />
             </div>
           </section>
@@ -206,9 +206,9 @@ function App() {
 
         {!response && !isLoading && (
           <>
-          <section className="py-16 space-y-8 max-w-6xl mx-auto px-4 sm:px-6">
+          <section className="py-16 space-y-8 w-full px-4 sm:px-6 lg:px-8">
               <div className="text-center">
-                <h2 className="text-3xl font-serif text-slate-900">Why Advocates Choose NitiNova</h2>
+                <h2 className="text-3xl font-bold text-slate-900">Why Advocates Choose NitiNova</h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 <FeatureCard

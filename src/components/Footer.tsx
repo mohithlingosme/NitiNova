@@ -3,7 +3,7 @@ import { Scale } from "lucide-react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="mt-20 border-t border-slate-200 bg-white">
+    <footer className="mt-12 border-t border-slate-200 bg-white">
       <div className="max-w-6xl mx-auto px-6 lg:px-8 py-14 grid md:grid-cols-4 gap-10">
         <div className="space-y-3">
           <div className="flex items-center gap-2">
@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
             Built in India for the Indian Legal System. Data is confidential, encrypted, and not stored after verification.
           </p>
         </div>
-        <div className="space-y-2 text-sm text-slate-600">
+        <div className="flex flex-col gap-2 text-sm text-slate-600">
           <p className="font-semibold text-slate-900">About</p>
           <a className="hover:text-slate-900" href="#">Company</a>
           <a className="hover:text-slate-900" href="#">Pricing</a>

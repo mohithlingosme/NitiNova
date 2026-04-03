@@ -22,7 +22,7 @@ const MockupCard: React.FC = () => {
             <span>Confidence</span>
             <span>0.92</span>
           </div>
-          <div className="flex items-center justify-between text-[11px] text-slate-500">
+          <div className="flex w-full items-center justify-between text-[11px] text-slate-500">
             <span>0</span>
             <span>0.92</span>
           </div>
