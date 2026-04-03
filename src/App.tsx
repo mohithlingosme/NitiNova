@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "motion/react";
 import ReactMarkdown from "react-markdown";
 import {
   AlertCircle,
+  ArrowRight,
   BookOpen,
   CheckCircle2,
   ExternalLink,
@@ -57,6 +58,24 @@ const toUiResponse = (api: ApiResponse): UiResponse => {
     raw: api,
   };
 };
+
+const productVisuals = [
+  {
+    src: "/assets/dashboard-preview.svg",
+    title: "Verification Workspace",
+    description: "A focused analyst view with confidence trend, citation status, and action queue.",
+  },
+  {
+    src: "/assets/citation-graph.svg",
+    title: "Citation Relationship Map",
+    description: "Judgment links and precedent strength shown as an easy-to-scan network view.",
+  },
+  {
+    src: "/assets/mobile-review.svg",
+    title: "Mobile Review Mode",
+    description: "Quick confidence checks for advocates on the move before hearing starts.",
+  },
+];
 
 function App() {
   const [query, setQuery] = useState("");
@@ -144,9 +163,13 @@ function App() {
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-4 py-12">
+      <main className="max-w-5xl mx-auto px-4 py-12">
         {/* Hero Section */}
         <section className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold uppercase tracking-wider mb-5">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            Trusted by legal teams for high-stakes filings
+          </div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -164,6 +187,11 @@ function App() {
             Eliminating hallucinated citations in legal research.
             Cross-referenced against Supreme Court precedents (1950-2025).
           </motion.p>
+          <div className="mt-7 flex flex-wrap justify-center gap-3 text-sm">
+            <span className="px-3 py-1.5 bg-white border border-slate-200 rounded-full">75,000+ Judgments Indexed</span>
+            <span className="px-3 py-1.5 bg-white border border-slate-200 rounded-full">Hallucination Guardrails</span>
+            <span className="px-3 py-1.5 bg-white border border-slate-200 rounded-full">Court-Ready Citation Format</span>
+          </div>
         </section>
 
         {/* Search Section */}
@@ -343,6 +371,27 @@ function App() {
           )}
         </AnimatePresence>
 
+        {history.length > 0 && (
+          <section className="mt-10">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-slate-400 mb-3">
+              <History className="w-4 h-4" />
+              Recent verification searches
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {history.map((item, index) => (
+                <button
+                  key={`${item.query}-${index}`}
+                  onClick={() => handleSearch(undefined, item.query)}
+                  className="group bg-white border border-slate-200 text-slate-600 text-sm px-3 py-2 rounded-lg hover:border-indigo-300 hover:text-indigo-700 transition-colors"
+                >
+                  {item.query}
+                  <span className="text-[11px] text-slate-400 ml-2 group-hover:text-indigo-500">{item.date}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* Features Grid (Empty state or bottom) */}
         {!response && !isLoading && (
           <section className="mt-24 grid md:grid-cols-3 gap-8">
@@ -375,6 +424,27 @@ function App() {
             </div>
           </section>
         )}
+
+        <section className="mt-24">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-2xl font-bold tracking-tight">UI Concepts You Can Build Next</h2>
+            <span className="text-xs text-slate-500 uppercase tracking-widest font-semibold">Generated Visual Ideas</span>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {productVisuals.map((visual) => (
+              <article key={visual.title} className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+                <img src={visual.src} alt={visual.title} className="w-full h-40 object-cover border-b border-slate-100" />
+                <div className="p-5">
+                  <h3 className="font-semibold text-slate-900 mb-2">{visual.title}</h3>
+                  <p className="text-sm text-slate-500 leading-relaxed">{visual.description}</p>
+                  <button className="mt-4 text-sm font-semibold text-indigo-700 inline-flex items-center gap-1 hover:text-indigo-800">
+                    Explore this concept <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
       </main>
 
       <footer className="border-t border-slate-200 py-12 mt-20 bg-white">

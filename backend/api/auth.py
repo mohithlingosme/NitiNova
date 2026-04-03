@@ -1,9 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from jose import JWTError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from backend.api import deps
 from backend.core.config import get_settings
-from backend.core.security import create_token, verify_password
+from backend.core.security import create_token, decode_token, verify_password
 from backend.models.schemas import LoginRequest, RegisterRequest, TokenResponse, UserPublic
 from backend.core.database import get_db
 from backend.core import crud
@@ -33,15 +34,20 @@ async def login(payload: LoginRequest, db: AsyncSession = Depends(get_db)) -> To
 
 
 @router.post("/refresh", response_model=TokenResponse)
-async def refresh(token: str):
-    # This is a simplified refresh token implementation.
-    # In a real application, you would validate the refresh token against a database.
-    # For now, we will just re-issue tokens.
+async def refresh(token: str) -> TokenResponse:
     settings = get_settings()
-    # Here you would decode the refresh token to get the user's email
-    # For simplicity, we are not implementing full refresh token logic here.
-    # A proper implementation would involve a token blacklist or a database of valid refresh tokens.
-    raise HTTPException(status_code=status.HTTP_501_NOT_IMPLEMENTED, detail="Refresh token functionality not fully implemented")
+    try:
+        payload = decode_token(token, token_type="refresh")
+    except JWTError as exc:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token") from exc
+
+    subject = payload.get("sub")
+    if not subject:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid refresh token")
+
+    access = create_token(subject, settings.access_token_expire_minutes, "access")
+    refresh_token = create_token(subject, settings.refresh_token_expire_minutes, "refresh")
+    return TokenResponse(access_token=access, refresh_token=refresh_token)
 
 @router.post("/logout")
 async def logout(current_user: UserPublic = Depends(deps.get_current_user)):

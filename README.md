@@ -291,7 +291,7 @@ This software is developed by **Mohith M** (Independent Contractor) on behalf of
 
 ## Current Status
 
-The project remains pre-implementation. Use [TODO.md](./TODO.md) for the authoritative checklist and [docs/](./docs/) for design PDFs. Development is planned to begin with the backend scaffold on Apr 3, 2026.
+The codebase is now implementation-active with a working FastAPI backend, React frontend, and verification modules committed in this repository. Use [TODO.md](./TODO.md) as the long-term product plan, but treat the source tree as the primary truth for shipped behavior.
 
 ## Repository Structure
 
@@ -346,6 +346,18 @@ NitiNova/
 6. Review planning documents anytime:
    - [TODO.md](./TODO.md) for the 10-phase MVP build plan.
    - [docs/](./docs/) PDFs for detailed notes and proposals.
+
+## Commercial Off-the-Shelf (COTS) Readiness
+
+NitiNova is now structured to run as a packaged commercial product profile:
+
+- **Versioned service metadata** through environment variables (`APP_VERSION`, `PRODUCT_EDITION`, `SLA_TIER`).
+- **Support metadata endpoint** at `GET /api/product/about` for deployment inventory and customer handoff docs.
+- **Operational health endpoint** at `GET /api/health` exposing environment, version, and configured providers.
+- **JWT auth lifecycle support** including login, refresh token rotation, and logout endpoint.
+- **Environment-driven deployment** via `.env.example` for repeatable installs across staging/production.
+
+For enterprise distribution, pin release tags and attach deployment manifests plus customer-specific `.env` profiles.
 
 ## Next Steps
 
