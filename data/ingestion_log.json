@@ -1,0 +1,10 @@
+[
+    {
+        "source_file": "C:\\Users\\mohit\\Documents\\GitHub\\NitiNova Final product\\data\\archive (1)\\supreme_court_judgments\\2021\\download_1.pdf",
+        "destination_file": "C:\\Users\\mohit\\Documents\\GitHub\\NitiNova Final product\\data\\raw\\download_1.pdf",
+        "ingested_at": "2026-04-02T19:24:52.702656",
+        "case_name": "download_1",
+        "citation": "Unknown",
+        "file_hash": "9ac089265d5b26d31a47958e392194cd00500d2a2d2c57140cc39d3582a6e6fe"
+    }
+]

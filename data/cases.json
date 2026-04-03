@@ -1,0 +1,45 @@
+[
+  {
+    "case_id": "SC_1950_AK_GOPALAN",
+    "case_name": "A.K. Gopalan v. State of Madras",
+    "year": 1950,
+    "court": "Supreme Court of India",
+    "bench": [
+      "H.J. Kania (CJI)",
+      "Fazl Ali J.",
+      "Patanjali Sastri J.",
+      "Mehr Chand Mahajan J.",
+      "B.K. Mukherjea J.",
+      "S.R. Das J."
+    ],
+    "citations": [
+      "AIR 1950 SC 27",
+      "1950 SCR 88"
+    ],
+    "facts": "The petitioner, A.K. Gopalan, was detained under the Preventive Detention Act, 1950. He filed a writ petition under Article 32 challenging his detention as unconstitutional, arguing that the Act violated his fundamental rights under Articles 13, 19, 21, and 22 of the Constitution.",
+    "issues": [
+      "Whether the Preventive Detention Act, 1950 violates fundamental rights under Articles 19, 21, and 22.",
+      "Whether Article 21 includes principles of natural justice (due process).",
+      "Whether Articles 19 and 21 are interconnected or independent.",
+      "Whether preventive detention laws can be tested under Article 19."
+    ],
+    "held": "The majority upheld the validity of the Preventive Detention Act, 1950 (except Section 14, which was partially invalid). The Court held that Article 21 requires only 'procedure established by law' and does not include substantive due process. It also held that Articles 19 and 21 are separate and not interdependent.",
+    "legal_principles": [
+      "Article 21 does not include 'due process of law'; it only requires procedure established by law.",
+      "Fundamental rights under Articles 19 and 21 are distinct and not interlinked.",
+      "Preventive detention laws are not subject to Article 19 scrutiny.",
+      "Article 22 provides specific safeguards for preventive detention.",
+      "The term 'law' in Article 21 refers to enacted law, not natural justice principles."
+    ],
+    "ratio_decidendi": "The Constitution deliberately uses the phrase 'procedure established by law' instead of 'due process of law', meaning that any deprivation of personal liberty is valid if it follows a law enacted by the legislature. Articles 19 and 21 operate independently, and preventive detention laws are governed specifically by Article 22.",
+    "dissenting_opinion": "Justice Fazl Ali dissented, holding that preventive detention directly affects fundamental rights under Article 19 and should be subject to reasonableness. He also argued that Article 21 should include principles of natural justice similar to due process.",
+    "significance": "This case established the early narrow interpretation of Article 21, which was later expanded in Maneka Gandhi v. Union of India (1978).",
+    "keywords": [
+      "preventive detention",
+      "Article 21",
+      "procedure established by law",
+      "fundamental rights",
+      "constitutional law"
+    ]
+  }
+]
