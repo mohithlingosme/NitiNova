@@ -1,40 +1,55 @@
 import { useCallback, useEffect, useState } from "react";
-import { login as apiLogin } from "../services/api";
+import { supabase } from "../lib/supabase";
+
+type User = any; // Supabase User type
 
 type LoginFn = (email: string, password: string) => Promise<void>;
+type SignupFn = (email: string, password: string) => Promise<void>;
 
 /**
- * Lightweight auth state tracker backed by localStorage JWT.
- * Keeps App logic simple while working with the existing FastAPI JWT endpoints.
+ * Production-grade Supabase auth hook.
+ * Handles session state, login/signup/logout, real-time auth changes.
  */
 export function useAuth() {
-  const [token, setToken] = useState<string | null>(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setToken(localStorage.getItem("jwt"));
+    // Initial session load
+    supabase.auth.getUser().then(({ data }) => {
+      setUser(data.user);
+      setLoading(false);
+    });
+
+    // Real-time auth listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login: LoginFn = useCallback(async (email, password) => {
-    const data = await apiLogin(email, password);
-    const accessToken = data?.access_token;
-
-    if (accessToken) {
-      localStorage.setItem("jwt", accessToken);
-      setToken(accessToken);
-    } else {
-      throw new Error("Login response missing access_token");
-    }
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw new Error(error.message);
   }, []);
 
-  const logout = useCallback(() => {
-    localStorage.removeItem("jwt");
-    setToken(null);
+  const signup: SignupFn = useCallback(async (email, password) => {
+    const { error } = await supabase.auth.signUp({ email, password });
+    if (error) throw new Error(error.message);
+  }, []);
+
+  const logout = useCallback(async () => {
+    await supabase.auth.signOut();
   }, []);
 
   return {
-    token,
-    isAuthenticated: Boolean(token),
+    user,
+    loading,
+    isAuthenticated: !!user,
     login,
+    signup,
     logout,
   };
 }

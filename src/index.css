@@ -33,3 +33,14 @@ body {
 .markdown-body li { @apply mb-1; }
 .markdown-body strong { @apply font-bold text-slate-900; }
 .markdown-body blockquote { @apply border-l-4 border-indigo-200 pl-4 italic text-slate-600 my-4; }
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
