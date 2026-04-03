@@ -1,0 +1,46 @@
+# Environment and secrets
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+*.egg-info/
+.eggs/
+dist/
+build/
+.python-version
+.pytest_cache/
+.mypy_cache/
+.coverage*
+*.sqlite3
+
+# Node / frontend
+node_modules/
+.npm/
+.pnpm-store/
+.yarn/
+*.log
+
+# Editors / OS
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Data & caches
+.cache/
+logs/
+data/raw/
+data/processed/
+
+# Archives generated locally
+*.zip
+*.tar
+*.gz
