@@ -1,7 +1,12 @@
 from typing import List, Dict
+import logging
 from backend.models.schemas import MatchResult
 
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 class ScoringEngine:
+
     """
     Applies a scoring scheme to the results of the CitationMatcher.
     """
@@ -36,7 +41,7 @@ class ScoringEngine:
         for result in verification_results:
             if result['status'] == 'unverified':
                 # Placeholder for re-run logic
-                print("A citation was unverified. Triggering re-run...")
+                logger.warning("A citation was unverified. Triggering re-run...")
                 return True
         return False
 

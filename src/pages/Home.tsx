@@ -2,6 +2,7 @@ import React from 'react';
 import Card from '../components/Card';
 import Loader from '../components/Loader';
 import { Search, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Home: React.FC = () => {
   return (
@@ -23,10 +24,14 @@ const Home: React.FC = () => {
               className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-2xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 shadow-sm transition-all"
             />
           </div>
-          <button className="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-semibold hover:bg-indigo-700 shadow-lg hover:shadow-xl transition-all whitespace-nowrap">
+          <Link to="/research" className="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-semibold hover:bg-indigo-700 shadow-lg hover:shadow-xl transition-all whitespace-nowrap">
             Analyze
-          </button>
+          </Link>
+          <Link to="/research" className="px-8 py-4 bg-emerald-600 text-white rounded-2xl font-semibold hover:bg-emerald-700 shadow-lg hover:shadow-xl transition-all whitespace-nowrap">
+            Try Demo
+          </Link>
         </div>
+        <p className="text-sm text-gray-500 mt-4">Try Demo for instant results with no waiting</p>
       </div>
 
       {/* Trending Topics */}

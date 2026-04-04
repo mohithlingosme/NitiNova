@@ -41,7 +41,11 @@ def build_vector_index():
             with open(filepath, 'r') as f:
                 data = json.load(f)
                 
-                text = data.get('full_judgment_text', '')
+                # Use facts, judgement, summary for embeddings as per task
+                facts = data.get('facts', '')
+                judgement = data.get('judgement', '')
+                summary = data.get('summary', '')
+                text = f"{facts} {judgement} {summary}".strip()
                 if not text:
                     continue
                 

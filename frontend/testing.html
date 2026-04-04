@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NitiNova Testing Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .json-pre { white-space: pre-wrap; font-family: 'Monaco', 'Menlo', monospace; font-size: 14px; }
+        .loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 40px; height: 40px; animation: spin 2s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .status-success { background-color: #d4edda; color: #155724; }
+        .status-error { background-color: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen p-8 font-sans">
+    <div class="max-w-7xl mx-auto">
+        <!-- HEADER -->
+        <div class="text-center mb-12">
+            <h1 class="text-5xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-4">
+                NitiNova Testing Dashboard
+            </h1>
+            <p class="text-xl text-gray-600">Manual API Testing Interface</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- FILE UPLOAD SECTION -->
+            <div class="bg-white rounded-xl shadow-lg p-8 border">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">📁 File Upload</h2>
+                <div class="space-y-4">
+                    <input type="file" id="fileInput" accept=".pdf" class="w-full p-3 border-2 border-dashed border-gray-300 rounded-xl hover:border-primary transition-colors">
+                    <button onclick="uploadFile()" id="uploadBtn" class="w-full bg-primary text-white py-3 px-6 rounded-xl font-semibold hover:bg-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                        Upload
+                    </button>
+                    <div id="uploadResult" class="hidden p-4 rounded-lg font-mono text-sm"></div>
+                </div>
+                <div class="mt-4 p-3 bg-gray-50 rounded-lg">
+                    <strong>Uploaded File:</strong> <span id="uploadedFilePath" class="font-mono text-sm"></span>
+                </div>
+            </div>
+
+            <!-- PROCESS SECTION -->
+            <div class="bg-white rounded-xl shadow-lg p-8 border">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">⚙️ Process Case</h2>
+                <button onclick="processCase()" id="processBtn" class="w-full bg-green-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-green-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed mb-4">
+                    Process Case
+                </button>
+                <div id="processResult" class="hidden p-4 rounded-lg bg-gray-50 json-pre max-h-64 overflow-auto"></div>
+                <div id="processLoading" class="hidden flex justify-center py-8">
+                    <div class="loading-spinner"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-8">
+            <!-- SEARCH SECTION -->
+            <div class="bg-white rounded-xl shadow-lg p-8 border">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">🔍 Search</h2>
+                <div class="space-y-4">
+                    <input type="text" id="searchQuery" placeholder="Enter search query..." class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <select id="searchType" class="w-full p-3 border border-gray-300 rounded-xl">
+                        <option value="keyword">Keyword</option>
+                        <option value="semantic">Semantic</option>
+                    </select>
+                    <button onclick="searchCases()" class="w-full bg-purple-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-purple-700 transition-all">
+                        Search
+                    </button>
+                    <div id="searchResult" class="hidden space-y-3 max-h-96 overflow-auto"></div>
+                </div>
+            </div>
+
+            <!-- CASE VIEW SECTION -->
+            <div class="bg-white rounded-xl shadow-lg p-8 border">
+                <h2 class="text-2xl font-bold mb-6 text-gray-800">📋 View Case</h2>
+                <div class="space-y-4 mb-6">
+                    <input type="text" id="caseId" placeholder="Enter Case ID..." class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <button onclick="getCase()" class="w-full bg-indigo-600 text-white py-3 px-6 rounded-xl font-semibold hover:bg-indigo-700 transition-all">
+                        Get Case
+                    </button>
+                </div>
+                <div id="caseResult" class="hidden p-4 rounded-lg bg-gray-50 json-pre max-h-96 overflow-auto"></div>
+            </div>
+        </div>
+
+        <!-- LOG PANEL -->
+        <div class="bg-white rounded-xl shadow-lg p-8 border mt-8">
+            <h2 class="text-2xl font-bold mb-6 text-gray-800">📊 API Logs</h2>
+            <div id="logPanel" class="space-y-2 max-h-96 overflow-auto bg-gray-50 p-4 rounded-lg font-mono text-sm"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000/api'; // Adjust if backend port differs
+        const logPanel = document.getElementById('logPanel');
+
+        function addLog(message, status = 'info') {
+            const timestamp = new Date().toISOString();
+            const statusClass = status === 'success' ? 'status-success' : status === 'error' ? 'status-error' : '';
+            const statusIcon = status === 'success' ? '✅' : status === 'error' ? '❌' : 'ℹ️';
+            const logEntry = document.createElement('div');
+            logEntry.className = `p-3 rounded-lg ${statusClass}`;
+            logEntry.innerHTML = `<strong>[${timestamp}] ${statusIcon}</strong> ${message}`;
+            logPanel.appendChild(logEntry);
+            logPanel.scrollTop = logPanel.scrollHeight;
+        }
+
+        function showStatus(elementId, message, isError = false) {
+            const el = document.getElementById(elementId);
+            el.textContent = message;
+            el.className = `p-4 rounded-lg font-mono text-sm ${isError ? 'status-error' : 'status-success'}`;
+            el.classList.remove('hidden');
+        }
+
+        async function apiCall(url, options = {}) {
+            try {
+                addLog(`Calling ${url}`, 'info');
+                const response = await fetch(url, {
+                    ...options,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        ...options.headers
+                    }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                addLog(`✅ ${url} succeeded`, 'success');
+                return data;
+            } catch (error) {
+                addLog(`❌ ${url} failed: ${error.message}`, 'error');
+                throw error;
+            }
+        }
+
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            if (!file) {
+                showStatus('uploadResult', 'Please select a PDF file', true);
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                document.getElementById('uploadBtn').disabled = true;
+                const data = await apiCall(`${API_BASE}/upload`, { method: 'POST', body: formData });
+                showStatus('uploadResult', `Success: ${JSON.stringify(data, null, 2)}`);
+                document.getElementById('uploadedFilePath').textContent = data.file_path || data.path || 'Unknown';
+            } catch (error) {
+                showStatus('uploadResult', `Error: ${error.message}`, true);
+            } finally {
+                document.getElementById('uploadBtn').disabled = false;
+            }
+        }
+
+        async function processCase() {
+            const filePath = document.getElementById('uploadedFilePath').textContent;
+            if (!filePath) {
+                showStatus('processResult', 'Please upload a file first', true);
+                return;
+            }
+
+            const processLoading = document.getElementById('processLoading');
+            const processBtn = document.getElementById('processBtn');
+            
+            processLoading.classList.remove('hidden');
+            processResult.classList.add('hidden');
+            processBtn.disabled = true;
+
+            try {
+                const data = await apiCall(`${API_BASE}/process`, {
+                    method: 'POST',
+                    body: JSON.stringify({ file_path: filePath })
+                });
+                document.getElementById('processResult').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                document.getElementById('processResult').classList.remove('hidden');
+            } catch (error) {
+                showStatus('processResult', `Error: ${error.message}`, true);
+            } finally {
+                processLoading.classList.add('hidden');
+                processBtn.disabled = false;
+            }
+        }
+
+        async function searchCases() {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (!query) {
+                addLog('Search query is empty', 'error');
+                return;
+            }
+
+            const searchType = document.getElementById('searchType').value;
+            const resultEl = document.getElementById('searchResult');
+            
+            resultEl.innerHTML = '<div class="text-center py-8">Searching...</div>';
+            resultEl.classList.remove('hidden');
+
+            try {
+                const data = await apiCall(`${API_BASE}/search?q=${encodeURIComponent(query)}&type=${searchType}`);
+                let html = '';
+                if (data.results && data.results.length > 0) {
+                    data.results.forEach((result, idx) => {
+                        html += `
+                            <div class="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer border-l-4 border-primary" onclick="viewCase('${result.id}')">
+                                <h4 class="font-bold">${result.name || result.case_name || 'Unnamed'}</h4>
+                                <p class="text-sm text-gray-600">${result.summary || 'No summary'}</p>
+                            </div>
+                        `;
+                    });
+                } else {
+                    html = '<div class="text-center py-8 text-gray-500">No results found</div>';
+                }
+                resultEl.innerHTML = html;
+            } catch (error) {
+                resultEl.innerHTML = `<div class="p-4 bg-red-50 border border-red-200 rounded-lg">Error: ${error.message}</div>`;
+            }
+        }
+
+        async function getCase() {
+            const caseId = document.getElementById('caseId').value.trim();
+            if (!caseId) {
+                addLog('Case ID is empty', 'error');
+                return;
+            }
+
+            try {
+                const data = await apiCall(`${API_BASE}/case/${caseId}`);
+                document.getElementById('caseResult').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+                document.getElementById('caseResult').classList.remove('hidden');
+            } catch (error) {
+                showStatus('caseResult', `Error: ${error.message}`, true);
+            }
+        }
+
+        function viewCase(caseId) {
+            document.getElementById('caseId').value = caseId;
+            getCase();
+        }
+
+        // Copy to clipboard functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('copy-json')) {
+                const pre = e.target.closest('pre');
+                navigator.clipboard.writeText(pre.textContent).then(() => {
+                    const btn = e.target;
+                    const original = btn.textContent;
+                    btn.textContent = 'Copied!';
+                    btn.classList.add('bg-green-600');
+                    setTimeout(() => {
+                        btn.textContent = original;
+                        btn.classList.remove('bg-green-600');
+                    }, 2000);
+                });
+            }
+        });
+
+        // Clear logs button
+        const clearLogsBtn = document.createElement('button');
+        clearLogsBtn.textContent = 'Clear Logs';
+        clearLogsBtn.className = 'mb-4 px-4 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors';
+        clearLogsBtn.onclick = () => { logPanel.innerHTML = ''; };
+        logPanel.parentNode.insertBefore(clearLogsBtn, logPanel);
+    </script>
+</body>
+</html>

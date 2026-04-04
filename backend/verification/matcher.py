@@ -1,6 +1,10 @@
 from rapidfuzz import process, fuzz
 from typing import List, Dict, Optional
+import logging
 from backend.models.schemas import MatchResult
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class CitationMatcher:
     """
@@ -61,15 +65,15 @@ if __name__ == '__main__':
     # Test exact match
     exact_citation = "2023 INSC 456"
     result = matcher.match(exact_citation)
-    print(f"Matching '{exact_citation}': {result}")
+    logger.info(f"Matching '{exact_citation}': {result}")
 
     # Test partial match
     partial_citation = "2023 INSC 455" # Slight typo
     result = matcher.match(partial_citation)
-    print(f"Matching '{partial_citation}': {result}")
+    logger.info(f"Matching '{partial_citation}': {result}")
     
     # Test no match
     no_match_citation = "1999 XYZ 123"
     result = matcher.match(no_match_citation)
-    print(f"Matching '{no_match_citation}': {result}")
+    logger.info(f"Matching '{no_match_citation}': {result}")
 

@@ -4,11 +4,22 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 import time
+import loguru
+from backend.core.config import get_settings
+logger = loguru.logger
 
 from backend.core.config import get_settings
-from backend.api import health, query, results, verify, auth, deps, admin
+from backend.api import health, query, results, verify, auth, deps, admin, llm, pipeline
 
 settings = get_settings()
+
+# Initialize logging
+loguru.logger.remove()
+loguru.logger.add("logs/app_{time}.log", rotation="1 day", level=settings.log_level.upper() if hasattr(settings, 'log_level') else "INFO")
+loguru.logger.add(sys.stdout, level=settings.log_level.upper() if hasattr(settings, 'log_level') else "INFO")
+logger.info("NitiNova API starting up...")
+
+import sys
 
 app = FastAPI(
     title=settings.app_name,
@@ -35,6 +46,7 @@ async def add_process_time_header(request: Request, call_next):
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled exception: {exc}", exc_info=exc)
     return JSONResponse(
         status_code=500,
         content={"message": "An unexpected error occurred."}
@@ -46,6 +58,8 @@ app.include_router(query.router, prefix=settings.api_prefix, tags=["Query"])
 app.include_router(results.router, prefix=settings.api_prefix, tags=["Results"])
 app.include_router(verify.router, prefix=settings.api_prefix, tags=["Verify"])
 app.include_router(admin.router, prefix=f"{settings.api_prefix}/admin", tags=["Admin"])
+app.include_router(llm.router, prefix=settings.api_prefix, tags=["LLM"])
+app.include_router(pipeline.router, prefix=settings.api_prefix, tags=["Pipeline"])
 
 @app.get("/")
 def read_root():

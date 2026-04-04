@@ -7,6 +7,7 @@ from typing import List, Optional, Literal
 
 from pydantic import BaseModel, Field
 from .db_models import VerificationLog as DBVerificationLog
+from typing import Dict, Any
 
 
 class Role(str, Enum):
@@ -134,3 +135,64 @@ class FinalResponse(BaseModel):
     unverified_count: int
     processing_time_ms: int
     re_run_count: int
+
+
+from typing import Dict, Any, Optional
+
+
+class StructuredCaseInput(BaseModel):
+    case_name: str
+    court: str
+    judges: Optional[List[str]] = None
+    date: Optional[str] = None
+    facts: str = ""
+    issues: List[str] = []
+    arguments: Optional[Dict[str, str]] = None
+    judgement: str = ""
+    citations: List[str] = []
+    full_text: Optional[str] = None
+
+
+class EnrichedCase(BaseModel):
+    summary: str = ""
+    facts: str = ""
+    issues: List[str] = []
+    ratio: str = ""
+    key_points: List[str] = []
+
+class ProcessRequest(BaseModel):
+    file_path: str
+
+class ProcessResponse(BaseModel):
+    task_id: uuid.UUID
+    status: str
+    file_path: Optional[str] = None
+    message: str = ""
+
+class SearchRequest(BaseModel):
+    q: str = Field(..., min_length=1)
+    type: Literal["keyword", "semantic"] = "semantic"
+    limit: int = 10
+
+class SearchResponse(BaseModel):
+    results: List[Dict[str, Any]]
+
+class CaseResponse(BaseModel):
+    id: uuid.UUID
+    case_name: str
+    court: Optional[str] = None
+    judges: Optional[List[str]] = None
+    date: Optional[datetime] = None
+    facts: Optional[str] = None
+    issues: Optional[Dict[str, Any]] = None  # JSONB
+    arguments: Optional[str] = None
+    judgement: Optional[str] = None
+    citations: Optional[Dict[str, Any]] = None  # JSONB
+    summary: Optional[str] = None
+    ratio: Optional[str] = None
+    subject_tags: Optional[List[str]] = None
+    case_status: Optional[str] = None
+
+    model_config = {"from_attributes": True}
+
+

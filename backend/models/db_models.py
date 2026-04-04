@@ -12,25 +12,30 @@ from sqlalchemy import (
     Integer
 )
 from sqlalchemy.orm import relationship
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy.dialects.postgresql import UUID, JSONB
 from sqlalchemy.sql import func
 from sqlalchemy_utils import UUIDType
 
-from backend.core.database import Base
+from sqlalchemy.orm import declarative_base
+Base = declarative_base()
 
 class Case(Base):
     __tablename__ = "cases"
 
     id = Column(UUIDType(binary=False), primary_key=True, default=uuid.uuid4)
     case_name = Column(Text, nullable=False)
-    canonical_citation = Column(Text, unique=True, nullable=False)
-    alternate_citations = Column(JSON)
     court = Column(Text)
-    judgment_date = Column(DateTime)
     judges = Column(ARRAY(Text))
+    date = Column(DateTime)
+    facts = Column(Text)
+    issues = Column(JSONB)
+    arguments = Column(Text)
+    judgement = Column(Text)
+    citations = Column(JSONB)
+    summary = Column(Text)
+    ratio = Column(Text)
     subject_tags = Column(ARRAY(Text))
     case_status = Column(PgEnum('good_law', 'overruled', 'distinguished', 'per_incuriam', name='case_status_enum'))
-    full_text = Column(Text)
     source_url = Column(Text)
     ingested_at = Column(DateTime, server_default=func.now())
 

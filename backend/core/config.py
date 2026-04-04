@@ -50,6 +50,9 @@ class Settings(BaseSettings):
     embedding_model: str = "text-embedding-3-large"
     enable_rag: bool = True
     enable_verification: bool = True
+    
+    # OpenAI
+    openai_api_key: str = ""
 
     class Config:
         env_file = ".env"

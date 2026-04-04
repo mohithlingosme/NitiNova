@@ -1,0 +1,17 @@
+{
+  "case_name": "State of XYZ & ANR. vs ABC Pvt. Ltd.",
+  "court": "Supreme Court of India",
+  "judges": ["Pankala Ghosh", "Vikram Saraf"],
+  "date": "10-05-2024",
+  "facts": "The respondent company was transporting goods when intercepted by police on 10.10.2023. Vehicle bearing No. DL 01 AB 1234 contained 30 cartons of counterfeit medicines violating Drugs and Cosmetics Act, 1940. FIR No. 567/2023 registered u/s 420, 485 IPC and Sec. 18 AC D&C Act.",
+  "issues": [
+    "Whether High Court erred in directing release without trial conclusion?",
+    "Whether Section 457 CrPC applicable to vehicles seized u/s 482?"
+  ],
+  "arguments": {
+    "petitioner": "Learned counsel for State submitted that vehicle integral to crime, release would hamper investigation. Cited State of Maharashtra vs. Pratapsing 2002 AIR 526.",
+    "respondent": "Mr. Mehta contended vehicle commercial asset, owner innocent third party. Relied on SCC 2019 (7) 456."
+  },
+  "judgement": "We find High Court order suffers from non-application of mind to provisions of CrPC. Vehicle used in smuggling cannot be released mechanically. SLP admitted. High Court order stayed.",
+  "citations": ["State of Maharashtra vs. Pratapsing 2002 AIR 526", "SCC 2019 (7) 456"]
+}

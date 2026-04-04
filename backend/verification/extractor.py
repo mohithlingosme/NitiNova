@@ -1,5 +1,9 @@
 import re
+import logging
 from typing import List, NamedTuple
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 class RawCitation(NamedTuple):
     text: str
