@@ -1,0 +1,35 @@
+{
+  "name": "nitinova-frontend-next",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3001 --hostname 0.0.0.0",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "clean": "rm -rf .next node_modules",
+    "db:generate": "prisma generate"
+  },
+  "dependencies": {
+    "next": "^15.0.0-rc.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "@google/genai": "^1.29.0",
+    "lucide-react": "^0.546.0",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.5.0",
+    "react-markdown": "^10.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9",
+    "eslint-config-next": "^15.0.0-rc.0",
+    "postcss": "^8",
+    "tailwindcss": "^4.1.14",
+    "typescript": "~5.8.2"
+  }
+}

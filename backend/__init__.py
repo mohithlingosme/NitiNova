@@ -1,3 +1,2 @@
 # Backend package for NitiNova
-# FastAPI / Django backend for Legal AI Verification
-
+# Makes services importable: from backend.services.llm_service import ...

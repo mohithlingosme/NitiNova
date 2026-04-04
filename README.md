@@ -312,40 +312,33 @@ NitiNova/
 
 ## Getting Started
 
-**Prerequisites (install once):** Python 3.11+, Node.js LTS, and Docker Desktop (for Postgres/Redis during local runs).
+**Frontend (src/App.tsx - Standalone Vite React App):**
+```
+npm install
+npm run dev
+```
+Opens http://localhost:5173 - fully working UI calling backend /query API.
 
-1. Clone the repository:
-   ```
-   git clone https://github.com/mohithlingosme/NitiNova.git
-   cd NitiNova
-   ```
+**Backend (FastAPI Python):**
+```
+cd backend
+pip install -r requirements.txt  # or uv pip install -r requirements.txt
+uvicorn main:app --reload --port 8000
+```
 
-2. Prepare your Python environment:
-   ```
-   python -m venv .venv
-   .\\.venv\\Scripts\\Activate.ps1   # PowerShell on Windows
-   ```
-   > Requirements files land in PHASE 2; once present, run `pip install -r requirements.txt`.
+**Full Stack (Recommended):**
+```
+# Terminal 1: Backend
+cd backend && uvicorn main:app --reload
 
-3. Copy and fill environment variables:
-   ```
-   Copy-Item .env.example .env
-   ```
-   Populate values for `OPENAI_API_KEY`, `POSTGRES_*`, `PINECONE_API_KEY`, etc. `.env` is already gitignored.
+# Terminal 2: Frontend  
+npm run dev
+```
 
-4. (When docker-compose.yml arrives) start backing services:
-   ```
-   docker compose up -d
-   ```
+**Test Flow:** UI search → backend/api/query → RAG verification → verified citations with confidence scores.
 
-5. (When backend scaffold is committed) start the API:
-   ```
-   uvicorn backend.main:app --reload
-   ```
+**No Supabase/auth/pricing deps needed - all cleaned for MVP standalone operation.**
 
-6. Review planning documents anytime:
-   - [TODO.md](./TODO.md) for the 10-phase MVP build plan.
-   - [docs/](./docs/) PDFs for detailed notes and proposals.
 
 ## Commercial Off-the-Shelf (COTS) Readiness
 
