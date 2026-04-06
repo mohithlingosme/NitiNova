@@ -2,18 +2,38 @@ version: '3.8'
 
 services:
   backend:
-    build: .
+    build: ./backend
     ports:
       - "8000:8000"
+    env_file:
+      - .env
     volumes:
-      - .:/app
+      - ./backend:/app
     depends_on:
       - db
+      - pinecone  # Note: Pinecone is cloud, mock or use local alternative if needed
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    command: npm run dev
 
   db:
     image: postgres:15
     environment:
-      POSTGRES_DB: nitinova
-      POSTGRES_USER: user
-      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: niti_nova
+      POSTGRES_USER: niti
+      POSTGRES_PASSWORD: nova123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
 

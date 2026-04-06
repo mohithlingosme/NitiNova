@@ -1,2 +1,0 @@
-# Frontend pages (PHP/HTML)
-

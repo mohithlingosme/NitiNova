@@ -1,0 +1,20 @@
+from pydantic_settings import BaseSettings
+from functools import lru_cache
+
+class Settings(BaseSettings):
+    PROJECT_NAME: str = "NitiNova"
+    DEBUG: bool = False
+    DATABASE_URL: str
+    SECRET_KEY: str
+    OPENAI_API_KEY: str
+    PINECONE_API_KEY: str
+    PINECONE_INDEX_NAME: str = "niti-legal-index"
+    PINECONE_ENVIRONMENT: str = "us-west1-gcp-free"
+
+    class Config:
+        env_file = ".env"
+
+@lru_cache()
+def get_settings():
+    return Settings()
+
